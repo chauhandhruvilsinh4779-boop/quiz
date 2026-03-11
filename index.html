@@ -1,84 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A professional Computer Engineering Quiz platform for students to test their knowledge in DS, OS, and DBMS.">
+    <title>Computer Engineering Quiz | Academic Portal</title>
 
-<title>Computer Engineering Quiz</title>
+    <link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 </head>
-
 <body>
 
-<div class="container">
+    <main class="quiz-container">
+        <header class="quiz-header">
+            <h1>Computer Engineering Quiz</h1>
+            <p class="subtitle">Test your core engineering concepts</p>
+        </header>
 
-<div id="userPage">
+        <hr aria-hidden="true">
 
-<h1>Computer Engineering Quiz</h1>
+        <section id="userPage" class="quiz-step active-step" aria-labelledby="reg-title">
+            <h2 id="reg-title">Student Details</h2>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="e.g. John Doe" required>
+            </div>
 
-<label>Name</label>
-<input id="name">
+            <div class="form-group">
+                <label for="roll">Roll Number</label>
+                <input type="text" id="roll" placeholder="e.g. CS101" required>
+            </div>
 
-<label>Roll No</label>
-<input id="roll">
+            <div class="form-group">
+                <label for="class">Class / Semester</label>
+                <input type="text" id="class" placeholder="e.g. BE-3">
+            </div>
 
-<label>Class</label>
-<input id="class">
+            <button type="button" class="btn-primary" onclick="nextPage()">Continue to Subject</button>
+        </section>
 
-<button onclick="nextPage()">Continue</button>
+        <section id="subjectPage" class="quiz-step hidden" aria-labelledby="subject-title">
+            <h2 id="subject-title">Select Subject</h2>
+            <div class="form-group">
+                <label for="subject">Choose a Domain:</label>
+                <select id="subject" name="subject">
+                    <option value="" disabled selected>Select an option</option>
+                    <option value="ds">Data Structures</option>
+                    <option value="os">Operating Systems</option>
+                    <option value="cn">Computer Networks</option>
+                    <option value="dbms">Database Management Systems</option>
+                </select>
+            </div>
+            <button type="button" class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+        </section>
 
-</div>
+        <section id="quizPage" class="quiz-step hidden" aria-labelledby="title">
+            <header class="quiz-meta">
+                <h2 id="title">Subject Quiz</h2>
+                <div id="timer" class="timer-badge" aria-live="polite">Time Left: 10:00</div>
+            </header>
 
+            <form id="quizForm" class="quiz-questions">
+                </form>
 
-<div id="subjectPage" class="hidden">
+            <footer class="quiz-footer">
+                <button type="button" class="btn-success" onclick="submitQuiz()">Submit Answers</button>
+            </footer>
+        </section>
 
-<h2>Select Subject</h2>
+        <section id="resultPage" class="quiz-step hidden" aria-labelledby="result-title">
+            <h2 id="result-title">Quiz Results</h2>
+            
+            <article id="resultInfo" class="score-card">
+                </article>
 
-<select id="subject">
-<option value="">Choose</option>
-<option value="ds">Data Structures</option>
-<option value="os">Operating Systems</option>
-<option value="cn">Computer Networks</option>
-<option value="dbms">DBMS</option>
-</select>
+            <aside class="review-section">
+                <h3>Review Wrong Answers</h3>
+                <div id="wrong" class="error-log"></div>
+            </aside>
 
-<button onclick="startQuiz()">Start Quiz</button>
+            <nav class="action-nav">
+                <button type="button" class="btn-download" onclick="downloadPDF()">Download PDF Report</button>
+                <button type="button" class="btn-outline" onclick="location.reload()">Restart Quiz</button>
+            </nav>
+        </section>
+    </main>
 
-</div>
+    <footer class="main-footer">
+        <p>&copy; 2026 Engineering Quiz Portal. All rights reserved.</p>
+    </footer>
 
-
-<div id="quizPage" class="hidden">
-
-<h2 id="title"></h2>
-
-<div id="timer">10:00</div>
-
-<form id="quizForm"></form>
-
-<button onclick="submitQuiz()">Submit</button>
-
-</div>
-
-
-<div id="resultPage" class="hidden">
-
-<h2>Result</h2>
-
-<div id="resultInfo"></div>
-
-<h3>Wrong Answers</h3>
-
-<div id="wrong"></div>
-
-<button onclick="downloadPDF()">Download PDF</button>
-
-</div>
-
-</div>
-
-<script src="script.js"></script>
-
+    <script src="script.js" defer></script>
 </body>
 </html>
