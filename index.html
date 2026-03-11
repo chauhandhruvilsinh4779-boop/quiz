@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Computer Engineering Quiz</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="userPage">
+
+<h1>Computer Engineering Quiz</h1>
+
+<label>Name</label>
+<input id="name">
+
+<label>Roll No</label>
+<input id="roll">
+
+<label>Class</label>
+<input id="class">
+
+<button onclick="nextPage()">Continue</button>
+
+</div>
+
+
+<div id="subjectPage" class="hidden">
+
+<h2>Select Subject</h2>
+
+<select id="subject">
+<option value="">Choose</option>
+<option value="ds">Data Structures</option>
+<option value="os">Operating Systems</option>
+<option value="cn">Computer Networks</option>
+<option value="dbms">DBMS</option>
+</select>
+
+<button onclick="startQuiz()">Start Quiz</button>
+
+</div>
+
+
+<div id="quizPage" class="hidden">
+
+<h2 id="title"></h2>
+
+<div id="timer">10:00</div>
+
+<form id="quizForm"></form>
+
+<button onclick="submitQuiz()">Submit</button>
+
+</div>
+
+
+<div id="resultPage" class="hidden">
+
+<h2>Result</h2>
+
+<div id="resultInfo"></div>
+
+<h3>Wrong Answers</h3>
+
+<div id="wrong"></div>
+
+<button onclick="downloadPDF()">Download PDF</button>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
