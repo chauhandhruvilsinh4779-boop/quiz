@@ -1,96 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A professional Computer Engineering Quiz platform for students to test their knowledge in DS, OS, and DBMS.">
-    <title>Computer Engineering Quiz | Academic Portal</title>
-
+    <title>Professional Engineering Quiz</title>
+    <!-- Google Fonts for professional typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to our refactored CSS file -->
     <link rel="stylesheet" href="style.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <!-- Using jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
+
 <body>
 
-    <main class="quiz-container">
-        <header class="quiz-header">
-            <h1>Computer Engineering Quiz</h1>
-            <p class="subtitle">Test your core engineering concepts</p>
-        </header>
+    <!-- Background decorative elements -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-        <hr aria-hidden="true">
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
 
-        <section id="userPage" class="quiz-step active-step" aria-labelledby="reg-title">
-            <h2 id="reg-title">Student Details</h2>
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" placeholder="e.g. John Doe" required>
-            </div>
+    <!-- Semantic HTML5 Main Container -->
+    <main class="container glass-panel">
 
-            <div class="form-group">
-                <label for="roll">Roll Number</label>
-                <input type="text" id="roll" placeholder="e.g. CS101" required>
-            </div>
-
-            <div class="form-group">
-                <label for="class">Class / Semester</label>
-                <input type="text" id="class" placeholder="e.g. BE-3">
-            </div>
-
-            <button type="button" class="btn-primary" onclick="nextPage()">Continue to Subject</button>
-        </section>
-
-        <section id="subjectPage" class="quiz-step hidden" aria-labelledby="subject-title">
-            <h2 id="subject-title">Select Subject</h2>
-            <div class="form-group">
-                <label for="subject">Choose a Domain:</label>
-                <select id="subject" name="subject">
-                    <option value="" disabled selected>Select an option</option>
-                    <option value="ds">Data Structures</option>
-                    <option value="os">Operating Systems</option>
-                    <option value="cn">Computer Networks</option>
-                    <option value="dbms">Database Management Systems</option>
-                </select>
-            </div>
-            <button type="button" class="btn-primary" onclick="startQuiz()">Start Quiz</button>
-        </section>
-
-        <section id="quizPage" class="quiz-step hidden" aria-labelledby="title">
-            <header class="quiz-meta">
-                <h2 id="title">Subject Quiz</h2>
-                <div id="timer" class="timer-badge" aria-live="polite">Time Left: 10:00</div>
+        <!-- User Information Section -->
+        <section id="userPage" class="page active">
+            <header>
+                <div class="icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                </div>
+                <h1>Engineering Quiz</h1>
+                <p class="subtitle">Enter your details to begin the assessment</p>
             </header>
 
-            <form id="quizForm" class="quiz-questions">
-                </form>
+            <form id="userInfoForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input id="name" type="text" placeholder="e.g. Dhruvil" required aria-required="true">
+                    <span class="error-text" id="nameError"></span>
+                </div>
 
-            <footer class="quiz-footer">
-                <button type="button" class="btn-success" onclick="submitQuiz()">Submit Answers</button>
-            </footer>
+                <div class="form-group">
+                    <label for="roll">Roll Number</label>
+                    <input id="roll" type="text" placeholder="e.g. CS-101" required aria-required="true">
+                    <span class="error-text" id="rollError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="class">Class / Division</label>
+                    <input id="class" type="text" placeholder="e.g. TE Computer" required aria-required="true">
+                    <span class="error-text" id="classError"></span>
+                </div>
+
+                <button type="button" onclick="app.validateAndNext()" class="btn-primary">
+                    Continue <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M5 12h14m-7-7 7 7-7 7" />
+                    </svg>
+                </button>
+            </form>
         </section>
 
-        <section id="resultPage" class="quiz-step hidden" aria-labelledby="result-title">
-            <h2 id="result-title">Quiz Results</h2>
-            
-            <article id="resultInfo" class="score-card">
-                </article>
+        <!-- Subject Selection Section -->
+        <section id="subjectPage" class="page hidden">
+            <header>
+                <h2>Select Assessment Topic</h2>
+                <p class="subtitle">Choose a specialized subject for your test</p>
+            </header>
 
-            <aside class="review-section">
-                <h3>Review Wrong Answers</h3>
-                <div id="wrong" class="error-log"></div>
-            </aside>
+            <div class="subject-cards">
+                <label class="subject-card">
+                    <input type="radio" name="subject" value="ds">
+                    <div class="card-content">
+                        <div class="card-icon ds-icon">🗂️</div>
+                        <h3>Data Structures</h3>
+                        <p>Arrays, Trees, Graphs & more</p>
+                    </div>
+                </label>
 
-            <nav class="action-nav">
-                <button type="button" class="btn-download" onclick="downloadPDF()">Download PDF Report</button>
-                <button type="button" class="btn-outline" onclick="location.reload()">Restart Quiz</button>
-            </nav>
+                <label class="subject-card">
+                    <input type="radio" name="subject" value="os">
+                    <div class="card-content">
+                        <div class="card-icon os-icon">⚙️</div>
+                        <h3>Operating Systems</h3>
+                        <p>Processes, Memory & Threads</p>
+                    </div>
+                </label>
+
+                <label class="subject-card">
+                    <input type="radio" name="subject" value="cn">
+                    <div class="card-content">
+                        <div class="card-icon cn-icon">🌐</div>
+                        <h3>Computer Networks</h3>
+                        <p>OSI, Protocols & Routing</p>
+                    </div>
+                </label>
+
+                <label class="subject-card">
+                    <input type="radio" name="subject" value="dbms">
+                    <div class="card-content">
+                        <div class="card-icon dbms-icon">🗃️</div>
+                        <h3>DBMS</h3>
+                        <p>SQL, ACID & Architecture</p>
+                    </div>
+                </label>
+            </div>
+
+            <div class="button-group mt-xl">
+                <button type="button" onclick="app.goBack('subjectPage', 'userPage')"
+                    class="btn-secondary">Back</button>
+                <button type="button" onclick="app.startQuiz()" class="btn-primary">Start Quiz</button>
+            </div>
         </section>
+
+        <!-- Quiz Section -->
+        <section id="quizPage" class="page hidden">
+            <header class="quiz-header">
+                <div class="quiz-title-wrapper">
+                    <span class="badge" id="quizBadge">Topic</span>
+                    <h2 id="quizTitle">Quiz</h2>
+                </div>
+                <!-- Timer display -->
+                <div id="timer" class="timer">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span id="timerText">10:00</span>
+                </div>
+            </header>
+
+            <!-- Progress Bar -->
+            <div class="progress-wrapper">
+                <div class="progress-labels">
+                    <span id="progressText">Question 0 of 0</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <form id="quizForm"></form>
+
+            <div class="quiz-footer">
+                <button type="button" onclick="app.confirmSubmit()" class="btn-primary btn-submit">Submit
+                    Assessment</button>
+            </div>
+        </section>
+
+        <!-- Result Section -->
+        <section id="resultPage" class="page hidden">
+            <header class="result-header">
+                <div id="scoreCircle" class="score-circle">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path class="circle" id="scorePath" stroke-dasharray="0, 100" d="M18 2.0845
+                            a 15.9155 15.9155 0 0 1 0 31.831
+                            a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <text x="18" y="20.35" class="percentage" id="scorePercentageText">0%</text>
+                    </svg>
+                </div>
+                <h2 id="resultGreeting">Assessment Complete</h2>
+                <p class="subtitle" id="resultSubtitle">Here is your detailed performance report</p>
+            </header>
+
+            <div id="resultInfo" class="result-summary"></div>
+
+            <h3 class="review-title">Detailed Review</h3>
+            <div id="reviewContainer" class="review-container"></div>
+
+            <div class="button-group mt-xl">
+                <button type="button" onclick="app.restartQuiz()" class="btn-secondary">Take Another Quiz</button>
+                <button type="button" onclick="app.downloadPDF()" class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                    </svg>
+                    Download Report
+                </button>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="main-footer">
-        <p>&copy; 2026 Engineering Quiz Portal. All rights reserved.</p>
-    </footer>
+    <!-- Load the Javascript file -->
+    <script src="script.js"></script>
 
-    <script src="script.js" defer></script>
 </body>
+
 </html>
